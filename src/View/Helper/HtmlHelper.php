@@ -73,7 +73,7 @@ class HtmlHelper extends \Cake\View\Helper\HtmlHelper {
             'javascriptend' => '</script>',
 
             // New templates for Bootstrap
-            'icon' => '<i aria-hidden="true" class="glyphicon glyphicon-{{type}}{{attrs.class}}"{{attrs}}></i>',
+            'icon' => '<i aria-hidden="true" class="{{style}} fa-{{type}}{{attrs.class}}"{{attrs}}></i>',
             'label' => '<span class="label label-{{type}}{{attrs.class}}"{{attrs}}>{{content}}</span>',
             'badge' => '<span class="badge{{attrs.class}}"{{attrs}}>{{content}}</span>',
             'alert' => '<div class="alert alert-{{type}}{{attrs.class}}" role="alert"{{attrs}}>{{close}}{{content}}</div>',
@@ -120,15 +120,22 @@ aria-valuenow="{{width}}" aria-valuemin="{{min}}" aria-valuemax="{{max}}" style=
      *
      * @param string $icon Name of the icon.
      * @param array $options Array of options. See above.
+	 * @param string $options['style'] Style of Font Awesome:
+	 *	'fas': solid
+	 *  'far': regular
+	 *  'fal': light
+	 *  'fab': brands
      *
      * @return string The HTML icon.
      */
     public function icon($icon, array $options = []) {
+		$options['style'] = empty($options['style']) ? 'fas' : $options['style'];
         $options += [
             'templateVars' => []
         ];
         return $this->formatTemplate('icon', [
-            'type' => $icon,
+            'style' => $options['style'],
+	        'type' => $icon,
             'attrs' => $this->templater()->formatAttributes($options),
             'templateVars' => $options['templateVars']
         ]);
